@@ -1,9 +1,13 @@
+import { useState } from "react";
+import PriceChart from "../Components/Common/PriceChart";
 import StatsCard from "../Components/Common/StatsCard";
 import { statsData } from "../Data/statsData";
 
 const MainContent = () => {
+  const [activeTimeframe, setActiveTimeframe] = useState("1D");
+  const timeframeButtons = ["1H", "1D", "1W", "1M", "1Y"];
   return (
-    <div className="min-h-[calc(100vh-80px)] bg-[#020617] p-6">
+    <div className="h-[calc(100vh-80px)] main-content-container overflow-y-auto bg-[#020617] p-6">
       <div className="space-y-6">
         {/* Stats Grid */}
         <div className="grid grid-cols-1 gap-5 md:grid-cols-2 xl:grid-cols-4">
@@ -28,22 +32,24 @@ const MainContent = () => {
             </div>
 
             <div className="flex items-center gap-2">
-              <button className="rounded-2xl bg-blue-500 px-4 py-2 text-sm font-medium">
-                1D
-              </button>
-
-              <button className="rounded-2xl bg-white/5 px-4 py-2 text-sm text-slate-300">
-                1W
-              </button>
-
-              <button className="rounded-2xl bg-white/5 px-4 py-2 text-sm text-slate-300">
-                1M
-              </button>
+              {timeframeButtons.map((timeframe) => (
+                <button
+                  key={timeframe}
+                  onClick={() => setActiveTimeframe(timeframe)}
+                  className={`rounded-2xl px-4 py-2 text-sm font-medium transition duration-200 ${
+                    activeTimeframe === timeframe
+                      ? "bg-blue-500 text-white"
+                      : "bg-white/5 text-slate-300 hover:bg-white/10"
+                  }`}
+                >
+                  {timeframe}
+                </button>
+              ))}
             </div>
           </div>
 
-          <div className="mt-6 flex h-[420px] items-center justify-center rounded-3xl border border-dashed border-white/10 bg-[#020617]">
-            <p className="text-slate-500">Chart Coming Soon</p>
+          <div className="mt-6 rounded-3xl border border-dashed border-white/10 bg-[#020617] p-4">
+            <PriceChart />
           </div>
         </div>
 

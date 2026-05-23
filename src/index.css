@@ -4,3 +4,9 @@ body {
   color: white;
   font-family: sans-serif;
 }
+.main-content-container::-webkit-scrollbar {
+  display: none;
+}
+.sideBar-Container::-webkit-scrollbar {
+  display: none;
+}
