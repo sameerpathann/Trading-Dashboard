@@ -2,6 +2,7 @@ import { useState } from "react";
 import PriceChart from "../Components/Common/PriceChart";
 import StatsCard from "../Components/Common/StatsCard";
 import { statsData } from "../Data/statsData";
+import { marketData } from "../Data/marketData";
 
 const MainContent = () => {
   const [activeTimeframe, setActiveTimeframe] = useState("1D");
@@ -57,8 +58,51 @@ const MainContent = () => {
         <div className="rounded-3xl border border-white/10 bg-[#0f172a] p-6">
           <h2 className="text-2xl font-bold">Market Overview</h2>
 
-          <div className="mt-6 flex h-[300px] items-center justify-center rounded-3xl border border-dashed border-white/10 bg-[#020617]">
-            <p className="text-slate-500">Market Table Coming Soon</p>
+          <div className="mt-6 overflow-x-auto">
+            <table className="h-full w-full border-separate border-spacing-y-3">
+              <thead>
+                <tr>
+                  <th className="text-left text-sm font-medium text-slate-400">
+                    Coin
+                  </th>
+                  <th className="text-left text-sm font-medium text-slate-400">
+                    Price
+                  </th>
+                  <th className="text-left text-sm font-medium text-slate-400">
+                    24h %
+                  </th>
+                  <th className="text-left text-sm font-medium text-slate-400">
+                    Market Cap
+                  </th>
+                  <th className="text-left text-sm font-medium text-slate-400">
+                    Volume
+                  </th>
+                </tr>
+              </thead>
+              <tbody>
+                {marketData.map((item) => (
+                  <tr
+                    key={item.id}
+                    className="rounded-2xl bg-[#020617] transition hover:bg-white/5"
+                  >
+                    <td className="rounded-l-2xl px-4 py-4">
+                      <div>
+                        <h3 className="font-semibold">{item.coin}</h3>
+                        <p className="text-sm text-slate-400">{item.symbol}</p>
+                      </div>
+                    </td>
+                    <td className="px-4 py-4 font-medium">{item.price}</td>
+                    <td
+                      className={`px-4 py-4 font-medium ${item.change.includes("-") ? `text-red-400` : `text-green-400`}`}
+                    >
+                      {item.change}
+                    </td>
+                    <td className="px-4 py-4">{item.marketCap}</td>
+                    <td className="rounded-r-2xl px-4 py-4">{item.volume}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
           </div>
         </div>
       </div>
