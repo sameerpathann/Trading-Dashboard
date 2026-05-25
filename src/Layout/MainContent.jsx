@@ -4,6 +4,7 @@ import StatsCard from "../Components/Common/StatsCard";
 import { statsData } from "../Data/statsData";
 import { marketData } from "../Data/marketData";
 import SectionWrapper from "../Components/Common/SectionWrapper";
+import Button from "../Components/Common/Button";
 
 const MainContent = () => {
   const [activeTimeframe, setActiveTimeframe] = useState("1D");
@@ -36,17 +37,16 @@ const MainContent = () => {
 
             <div className="flex items-center gap-2">
               {timeframeButtons.map((timeframe) => (
-                <button
+                <Button
                   key={timeframe}
+                  className="text-sm cursor-pointer"
+                  variant={
+                    activeTimeframe === timeframe ? "primary" : undefined
+                  }
                   onClick={() => setActiveTimeframe(timeframe)}
-                  className={`rounded-2xl px-4 py-2 text-sm font-medium transition duration-200 ${
-                    activeTimeframe === timeframe
-                      ? "bg-blue-500 text-white"
-                      : "bg-white/5 text-slate-300 hover:bg-white/10"
-                  }`}
                 >
                   {timeframe}
-                </button>
+                </Button>
               ))}
             </div>
           </div>
