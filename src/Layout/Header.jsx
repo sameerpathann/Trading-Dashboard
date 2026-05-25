@@ -1,5 +1,5 @@
-import { Bell } from "lucide-react";
-const Header = () => {
+import { Bell, Moon, Menu } from "lucide-react";
+const Header = ({ setIsSidebarOpen }) => {
   return (
     <div className="h-[80px] border-b border-white/10 bg-[#020617] px-6 flex items-center">
       <div className="flex items-center justify-between w-full">
@@ -12,6 +12,12 @@ const Header = () => {
         </div>
         {/* Right */}
         <div className="flex items-center gap-4">
+          <button
+            onClick={() => setIsSidebarOpen((prev) => !prev)}
+            className="flex items-center justify-center rounded-2xl cursor-pointer p-3 bg-white/5 border border-white/10 transition hover:bg-white/10 lg:hidden"
+          >
+            <Menu size={20} />
+          </button>
           <input
             className="outline-none cursor-pointer border border-white/10 transition rounded-2xl bg-white/5 px-4 py-3 placeholder:text-slate-500 focus:border-blue-500 w-[260px]"
             type="text"

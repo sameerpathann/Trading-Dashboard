@@ -11,8 +11,8 @@ import { chartData } from "../../Data/chartData";
 
 const PriceChart = () => {
   return (
-    <div className="h-[420px] w-full">
-      <ResponsiveContainer width="100%" height="100%">
+    <div className="h-[420px] min-w-0 w-full">
+      <ResponsiveContainer>
         <LineChart
           margin={{
             top: 10,

@@ -8,7 +8,7 @@ const MainContent = () => {
   const [activeTimeframe, setActiveTimeframe] = useState("1D");
   const timeframeButtons = ["1H", "1D", "1W", "1M", "1Y"];
   return (
-    <div className="h-[calc(100vh-80px)] main-content-container overflow-y-auto bg-[#020617] p-6">
+    <div className="h-[calc(100vh-80px)] main-content-container  overflow-y-auto bg-[#020617] p-6">
       <div className="space-y-6">
         {/* Stats Grid */}
         <div className="grid grid-cols-1 gap-5 md:grid-cols-2 xl:grid-cols-4">
