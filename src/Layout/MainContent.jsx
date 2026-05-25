@@ -3,6 +3,7 @@ import PriceChart from "../Components/Common/PriceChart";
 import StatsCard from "../Components/Common/StatsCard";
 import { statsData } from "../Data/statsData";
 import { marketData } from "../Data/marketData";
+import SectionWrapper from "../Components/Common/SectionWrapper";
 
 const MainContent = () => {
   const [activeTimeframe, setActiveTimeframe] = useState("1D");
@@ -24,7 +25,8 @@ const MainContent = () => {
         </div>
 
         {/* Chart Section */}
-        <div className="rounded-3xl border border-white/10 bg-[#0f172a] p-6">
+        <SectionWrapper>
+          {" "}
           <div className="flex items-center justify-between">
             <div>
               <h2 className="text-2xl font-bold">Bitcoin Price</h2>
@@ -48,16 +50,15 @@ const MainContent = () => {
               ))}
             </div>
           </div>
-
           <div className="mt-6 rounded-3xl border border-dashed border-white/10 bg-[#020617] p-4">
             <PriceChart />
           </div>
-        </div>
+        </SectionWrapper>
 
         {/* Market Table */}
-        <div className="rounded-3xl border border-white/10 bg-[#0f172a] p-6">
+        <SectionWrapper>
+          {" "}
           <h2 className="text-2xl font-bold">Market Overview</h2>
-
           <div className="mt-6 overflow-x-auto">
             <table className="h-full w-full border-separate border-spacing-y-3">
               <thead>
@@ -104,7 +105,7 @@ const MainContent = () => {
               </tbody>
             </table>
           </div>
-        </div>
+        </SectionWrapper>
       </div>
     </div>
   );
