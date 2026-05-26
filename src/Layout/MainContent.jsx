@@ -7,9 +7,12 @@ import SectionWrapper from "../Components/Common/SectionWrapper";
 import Button from "../Components/Common/Button";
 import MarketRow from "../Components/Common/MarketRow";
 
-const MainContent = () => {
+const MainContent = ({ query }) => {
   const [activeTimeframe, setActiveTimeframe] = useState("1D");
   const timeframeButtons = ["1H", "1D", "1W", "1M", "1Y"];
+  const filteredMarketData = marketData.filter((item) =>
+    item.coin.toLowerCase().includes(query?.toLowerCase() || ""),
+  );
   return (
     <div className="h-[calc(100vh-80px)] main-content-container  overflow-y-auto bg-[#020617] p-6">
       <div className="space-y-6">
@@ -82,9 +85,20 @@ const MainContent = () => {
                 </tr>
               </thead>
               <tbody>
-                {marketData.map((item) => (
-                  <MarketRow key={item.id} item={item} />
-                ))}
+                {filteredMarketData.length > 0 ? (
+                  filteredMarketData.map((item) => (
+                    <MarketRow key={item.id} item={item} />
+                  ))
+                ) : (
+                  <tr>
+                    <td
+                      colSpan={5}
+                      className="py-10 text-center text-slate-500"
+                    >
+                      No assets found.
+                    </td>
+                  </tr>
+                )}
               </tbody>
             </table>
           </div>

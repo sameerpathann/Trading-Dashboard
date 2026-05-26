@@ -1,5 +1,6 @@
 import { Bell, Moon, Menu } from "lucide-react";
-const Header = ({ setIsSidebarOpen }) => {
+
+const Header = ({ query, setQuery, setIsSidebarOpen }) => {
   return (
     <div className="h-[80px] border-b border-white/10 bg-[#020617] px-6 flex items-center">
       <div className="flex items-center justify-between w-full">
@@ -19,6 +20,8 @@ const Header = ({ setIsSidebarOpen }) => {
             <Menu size={20} />
           </button>
           <input
+            value={query}
+            onChange={(e) => setQuery(e.target.value)}
             className="outline-none cursor-pointer border border-white/10 transition rounded-2xl bg-white/5 px-4 py-3 placeholder:text-slate-500 focus:border-blue-500 w-[260px]"
             type="text"
             placeholder="Search assets..."
