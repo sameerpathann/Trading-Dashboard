@@ -6,13 +6,41 @@ import { marketData } from "../Data/marketData";
 import SectionWrapper from "../Components/Common/SectionWrapper";
 import Button from "../Components/Common/Button";
 import MarketRow from "../Components/Common/MarketRow";
-
+import { ArrowUp, ArrowDown, ArrowUpDown } from "lucide-react";
 const MainContent = ({ query }) => {
   const [activeTimeframe, setActiveTimeframe] = useState("1D");
   const timeframeButtons = ["1H", "1D", "1W", "1M", "1Y"];
+  const [sortOrder, setSortOrder] = useState("default");
   const filteredMarketData = marketData.filter((item) =>
     item.coin.toLowerCase().includes(query?.toLowerCase() || ""),
   );
+  const sortedMarketData = [...filteredMarketData];
+  if (sortOrder === "asc") {
+    sortedMarketData.sort(
+      (a, b) =>
+        parseFloat(a.price.replace(/[$,]/g, "")) -
+        parseFloat(b.price.replace(/[$,]/g, "")),
+    );
+  }
+  if (sortOrder === "desc") {
+    sortedMarketData.sort(
+      (a, b) =>
+        parseFloat(b.price.replace(/[$,]/g, "")) -
+        parseFloat(a.price.replace(/[$,]/g, "")),
+    );
+  }
+
+  const renderSortIcon = () => {
+    if (sortOrder === "asc") {
+      return <ArrowUp size={16} />;
+    }
+
+    if (sortOrder === "desc") {
+      return <ArrowDown size={16} />;
+    }
+
+    return <ArrowUpDown size={16} />;
+  };
   return (
     <div className="h-[calc(100vh-80px)] main-content-container  overflow-y-auto bg-[#020617] p-6">
       <div className="space-y-6">
@@ -45,7 +73,7 @@ const MainContent = ({ query }) => {
                   key={timeframe}
                   className="text-sm cursor-pointer"
                   variant={
-                    activeTimeframe === timeframe ? "primary" : undefined
+                    activeTimeframe === timeframe ? "primary" : "secondary"
                   }
                   onClick={() => setActiveTimeframe(timeframe)}
                 >
@@ -71,7 +99,26 @@ const MainContent = ({ query }) => {
                     Coin
                   </th>
                   <th className="text-left text-sm font-medium text-slate-400">
-                    Price
+                    <Button
+                      className="cursor-pointer flex items-center gap-1.5"
+                      variant="secondary"
+                      onClick={() =>
+                        setSortOrder((prev) => {
+                          if (prev === "default") {
+                            return "asc";
+                          }
+
+                          if (prev === "asc") {
+                            return "desc";
+                          }
+
+                          return "default";
+                        })
+                      }
+                    >
+                      Price
+                      {renderSortIcon()}
+                    </Button>
                   </th>
                   <th className="text-left text-sm font-medium text-slate-400">
                     24h %
@@ -85,8 +132,8 @@ const MainContent = ({ query }) => {
                 </tr>
               </thead>
               <tbody>
-                {filteredMarketData.length > 0 ? (
-                  filteredMarketData.map((item) => (
+                {sortedMarketData.length > 0 ? (
+                  sortedMarketData.map((item) => (
                     <MarketRow key={item.id} item={item} />
                   ))
                 ) : (
