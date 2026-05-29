@@ -96,6 +96,9 @@ const MainContent = ({ query }) => {
               <thead>
                 <tr>
                   <th className="text-left text-sm font-medium text-slate-400">
+                    Watchlist
+                  </th>
+                  <th className="text-left text-sm font-medium text-slate-400">
                     Coin
                   </th>
                   <th className="text-left text-sm font-medium text-slate-400">
