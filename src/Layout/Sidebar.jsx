@@ -9,43 +9,50 @@ import {
   X,
 } from "lucide-react";
 import { useState } from "react";
+import { NavLink } from "react-router-dom";
+
 const Sidebar = ({ isSidebarOpen, setIsSidebarOpen }) => {
-  const [activeNav, setActiveNav] = useState("Markets");
   const navItems = [
     {
       id: 1,
       label: "Markets",
       icon: CandlestickChart,
+      path: "/",
     },
 
     {
       id: 2,
       label: "Dashboard",
       icon: LayoutDashboard,
+      path: "/dashboard",
     },
 
     {
       id: 3,
       label: "Watchlist",
       icon: Star,
+      path: "/watchlist",
     },
 
     {
       id: 4,
       label: "Portfolio",
       icon: Wallet,
+      path: "/portfolio",
     },
 
     {
       id: 5,
       label: "Analytics",
       icon: BarChart3,
+      path: "/analytics",
     },
 
     {
       id: 6,
       label: "Settings",
       icon: Settings,
+      path: "/settings",
     },
   ];
   return (
@@ -78,14 +85,16 @@ const Sidebar = ({ isSidebarOpen, setIsSidebarOpen }) => {
               const Icon = item.icon;
 
               return (
-                <button
+                <NavLink
+                  to={item.path}
                   key={item.id}
-                  onClick={() => setActiveNav(item.label)}
-                  className={`flex items-center cursor-pointer gap-3 rounded-2xl px-4 py-3 text-left text-lg font-medium transition ${activeNav === item.label ? `bg-blue-500 text-white` : `text-slate-300 hover:bg-white/5`}`}
+                  className={({ isActive }) =>
+                    `flex items-center cursor-pointer gap-3 rounded-2xl px-4 py-3 text-left text-lg font-medium transition ${isActive ? `bg-blue-500 text-white` : `text-slate-300 hover:bg-white/5`}`
+                  }
                 >
                   <Icon size={20} />
                   <span>{item.label}</span>
-                </button>
+                </NavLink>
               );
             })}
           </div>

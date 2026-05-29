@@ -12,10 +12,10 @@ const MarketRow = ({ item }) => {
   const isInWatchlist = watchlistCoins.some((coin) => coin.id === item.id);
   return (
     <tr className="rounded-2xl bg-[#020617] transition hover:bg-white/5">
-      <td className="px-4 py-4">
+      <td className="rounded-l-2xl px-4 py-4">
         <Button
           className="cursor-pointer"
-          varient="secondary"
+          variant="secondary"
           onClick={() => {
             if (isInWatchlist) dispatch(removeFromWatchlist(item.id));
             else dispatch(addToWatchlist(item));
@@ -23,11 +23,11 @@ const MarketRow = ({ item }) => {
         >
           <Star
             size={18}
-            className={`${isInWatchlist ? `fill-yellow-400 text-yellow-400` : `text-slate-500`} transition-all duration-75`}
+            className={`transition-all duration-75 ${isInWatchlist ? `fill-yellow-400 text-yellow-400` : `text-slate-500`}`}
           />
         </Button>
       </td>
-      <td className="rounded-l-2xl px-4 py-4">
+      <td className="px-4 py-4">
         <div>
           <h3 className="font-semibold">{item.coin}</h3>
           <p className="text-sm text-slate-400">{item.symbol}</p>
