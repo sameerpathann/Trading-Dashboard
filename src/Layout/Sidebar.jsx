@@ -9,7 +9,7 @@ import {
   X,
 } from "lucide-react";
 import { useState } from "react";
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 
 const Sidebar = ({ isSidebarOpen, setIsSidebarOpen }) => {
   const navItems = [
@@ -55,6 +55,7 @@ const Sidebar = ({ isSidebarOpen, setIsSidebarOpen }) => {
       path: "/settings",
     },
   ];
+  const navigate = useNavigate();
   return (
     <div
       className={`fixed left-0 top-0 z-50 h-screen w-[240px transform bg-[#071024]] transition-transform duration-300 lg:static lg:translate-x-0 ${isSidebarOpen ? "translate-x-0" : "-translate-x-full"}`}
@@ -67,12 +68,12 @@ const Sidebar = ({ isSidebarOpen, setIsSidebarOpen }) => {
       </button>
       <div className="p-2 w-[240px]  bg-[#071024] h-screen overflow-y-scroll sideBar-Container border-r border-white/10 p-4">
         {/* Logo */}
-        <div>
+        <div onClick={() => navigate("/")}>
           <div className="flex items-center gap-3">
-            <div className="bg-blue-500 py-2 px-4 rounded-2xl text-xl font-bold flex items-center justify-center">
+            <div className="bg-blue-500 py-2 px-4 cursor-pointer rounded-2xl text-xl font-bold flex items-center justify-center">
               T
             </div>
-            <div>
+            <div className="cursor-pointer">
               <h1 className="text-lg font-bold">TradeX</h1>
               <p className="text-xs text-slate-400">Crypto Terminal</p>
             </div>
