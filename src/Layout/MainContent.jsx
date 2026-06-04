@@ -8,6 +8,8 @@ import MarketRow from "../Components/Common/MarketRow";
 import { ArrowUp, ArrowDown, ArrowUpDown } from "lucide-react";
 import { useDispatch, useSelector } from "react-redux";
 import { getMarketData } from "../Store/Features/marketSlice";
+import LoadingSkeleton from "../Components/Common/LoadingSkeleton";
+import ErrorState from "../Components/Common/ErrorState";
 const MainContent = ({ query }) => {
   const [activeTimeframe, setActiveTimeframe] = useState("1D");
   const timeframeButtons = ["1H", "1D", "1W", "1M", "1Y"];
@@ -45,9 +47,9 @@ const MainContent = ({ query }) => {
   return (
     <div className="h-[calc(100vh-80px)] main-content-container  overflow-y-auto bg-[#020617] p-6">
       {loading ? (
-        <h1>Loading...</h1>
+        <LoadingSkeleton />
       ) : error ? (
-        <h1>Error</h1>
+        <ErrorState error={error} onRetry={() => dispatch(getMarketData())} />
       ) : (
         <div className="space-y-6">
           {/* Stats Grid */}
