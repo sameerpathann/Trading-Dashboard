@@ -43,7 +43,6 @@ const MainContent = ({ query }) => {
   useEffect(() => {
     dispatch(getMarketData());
   }, [dispatch]);
-  console.log(marketCoins);
   return (
     <div className="h-[calc(100vh-80px)] main-content-container  overflow-y-auto bg-[#020617] p-6">
       {loading ? (
