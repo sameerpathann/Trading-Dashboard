@@ -1,4 +1,4 @@
-import { Moon } from "lucide-react";
+import { Moon, Sun } from "lucide-react";
 import {
   LayoutDashboard,
   CandlestickChart,
@@ -9,7 +9,9 @@ import {
   X,
 } from "lucide-react";
 import { useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { NavLink, useNavigate } from "react-router-dom";
+import { toggleTheme } from "../Store/Features/themeSlice";
 
 const Sidebar = ({ isSidebarOpen, setIsSidebarOpen }) => {
   const navItems = [
@@ -55,7 +57,10 @@ const Sidebar = ({ isSidebarOpen, setIsSidebarOpen }) => {
       path: "/settings",
     },
   ];
+  const theme = useSelector((state) => state.theme.theme);
   const navigate = useNavigate();
+  const dispatch = useDispatch();
+
   return (
     <div
       className={`fixed left-0 top-0 z-50 h-screen w-[240px transform bg-[#071024]] transition-transform duration-300 lg:static lg:translate-x-0 ${isSidebarOpen ? "translate-x-0" : "-translate-x-full"}`}
@@ -102,9 +107,25 @@ const Sidebar = ({ isSidebarOpen, setIsSidebarOpen }) => {
           {/* Bottom */}
           <div className="flex flex-col gap-4 mt-4">
             <button
-              className={`cursor-pointer text-left py-3 px-4 flex items-center gap-1 rounded-2xl text-lg font-medium border border-white/10 bg-white/5`}
+              onClick={() => dispatch(toggleTheme())}
+              className={`cursor-pointer text-left py-4 px-4 flex items-center gap-2 rounded-2xl text-lg font-medium border border-white/10 bg-white/5`}
             >
-              <Moon size={18} /> <span>Dark Mode</span>
+              <span className="font-medium">
+                {theme === "dark" ? "Dark Mode" : "Light Mode"}
+              </span>
+              <div
+                className={`relative h-8 w-14 rounded-full transition-all duration-300 ${theme === "dark" ? `bg-blue-500` : "bg-slate-500"}`}
+              >
+                <div
+                  className={`absolute top-1 h-6 w-6 flex items-center justify-center rounded-full bg-white transition-all duration-300 ${theme === `dark` ? `translate-x-8` : `translate-x-1`}`}
+                >
+                  {theme === "dark" ? (
+                    <Moon size={14} color="black" />
+                  ) : (
+                    <Sun size={14} color="black" />
+                  )}
+                </div>
+              </div>
             </button>
             <div className="flex flex-col gap-2 bg-white/5 p-4 rounded-3xl border border-white/10">
               <p className=" text-sm text-slate-400">Logged in as</p>
