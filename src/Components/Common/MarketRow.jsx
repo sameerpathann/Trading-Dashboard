@@ -5,13 +5,19 @@ import {
   removeFromWatchlist,
 } from "../../Store/Features/watchlistSlice";
 import Button from "./Button";
+import { useNavigate } from "react-router-dom";
 
 const MarketRow = ({ item }) => {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const watchlistCoins = useSelector((state) => state.watchlist.coins);
   const isInWatchlist = watchlistCoins.some((coin) => coin.id === item.id);
+
   return (
-    <tr className="rounded-2xl bg-[#020617] transition hover:bg-white/5">
+    <tr
+      onClick={() => navigate(`/coin/${item.id}`)}
+      className="rounded-2xl cursor-pointer bg-[#020617] transition hover:bg-white/5"
+    >
       <td className="rounded-l-2xl px-4 py-4">
         <Button
           className="cursor-pointer"
@@ -27,7 +33,7 @@ const MarketRow = ({ item }) => {
           />
         </Button>
       </td>
-      <td className="px-4 py-4">
+      <td className="px-4  py-4">
         <div className="flex items-center gap-3">
           <img src={item.image} alt={item.name} className="w-8 h-8" />
           <div>

@@ -10,3 +10,7 @@ body {
 .sideBar-Container::-webkit-scrollbar {
   display: none;
 }
+
+.coinDetail-container::-webkit-scrollbar {
+  display: none;
+}

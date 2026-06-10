@@ -6,6 +6,7 @@ import DashboardPage from "./Pages/DashboardPage";
 import AnalyticsPage from "./Pages/AnalyticsPage";
 import PortfolioPage from "./Pages/PortfolioPage";
 import SettingsPage from "./Pages/SettingsPage";
+import CoinDetailsPage from "./Pages/CoinDetailsPage";
 
 const App = () => {
   return (
@@ -16,6 +17,7 @@ const App = () => {
       <Route path="/analytics" element={<AnalyticsPage />} />
       <Route path="/portfolio" element={<PortfolioPage />} />
       <Route path="/settings" element={<SettingsPage />} />
+      <Route path="/coin/:coinId" element={<CoinDetailsPage />} />
     </Routes>
   );
 };
