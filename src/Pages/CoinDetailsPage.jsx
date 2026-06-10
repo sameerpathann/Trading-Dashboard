@@ -6,10 +6,17 @@ import {
   addToWatchlist,
   removeFromWatchlist,
 } from "../Store/Features/watchlistSlice";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { getMarketData } from "../Store/Features/marketSlice";
+import { addHolding } from "../Store/Features/portfolioSlice";
 
 const CoinDetailsPage = () => {
+  const [isPortfolioOpen, setIsPortfolioOpen] = useState(false);
+  const [formData, setFormData] = useState({
+    quantity: "",
+    buyPrice: "",
+  });
+
   const { coinId } = useParams();
 
   const dispatch = useDispatch();
@@ -27,6 +34,36 @@ const CoinDetailsPage = () => {
     }
   }, [dispatch, marketCoins.length]);
 
+  const handleSubmit = (e) => {
+    e.preventDefault();
+
+    if (!formData.quantity || !formData.buyPrice) {
+      alert("Please fill all the fields");
+      return;
+    } else if (
+      Number(formData.quantity) <= 0 ||
+      Number(formData.buyPrice) <= 0
+    ) {
+      alert("Quantity and buy price must be greater than 0");
+    } else {
+      dispatch(
+        addHolding({
+          id: coin.id,
+          name: coin.name,
+          symbol: coin.symbol,
+          image: coin.image,
+          quantity: Number(formData.quantity),
+          buyPrice: Number(formData.buyPrice),
+        }),
+      );
+      setFormData({ quantity: "", buyPrice: "" });
+      setIsPortfolioOpen(false);
+    }
+  };
+  const handleInputChange = (e) => {
+    setFormData((prev) => ({ ...prev, [e.target.name]: e.target.value }));
+  };
+
   if (loading) {
     return (
       <AppLayout>
@@ -38,7 +75,7 @@ const CoinDetailsPage = () => {
       </AppLayout>
     );
   }
-  
+
   if (!coin) {
     return (
       <AppLayout>
@@ -60,7 +97,7 @@ const CoinDetailsPage = () => {
   return (
     <AppLayout>
       {() => (
-        <div className="coinDetail-container h-[calc(100vh-80px)] overflow-y-auto bg-[#020617] p-6 text-white">
+        <div className="hideScrollbar h-[calc(100vh-80px)] overflow-y-auto bg-[#020617] p-6 text-white">
           <div className="flex flex-col gap-4 rounded-3xl border border-white/10 bg-[#0f172a] p-6 md:flex-row md:items-center md:justify-between">
             <div className="flex items-center gap-4">
               <img src={coin.image} alt={coin.name} className="h-16 w-16" />
@@ -78,29 +115,37 @@ const CoinDetailsPage = () => {
               </div>
             </div>
 
-            <button
-              onClick={() => {
-                if (isInWatchlist) {
-                  dispatch(removeFromWatchlist(coin.id));
-                } else {
-                  dispatch(addToWatchlist(coin));
-                }
-              }}
-              className="flex cursor-pointer items-center justify-center gap-2 rounded-2xl border border-white/10 bg-white/5 px-5 py-3 transition hover:bg-white/10"
-            >
-              <Star
-                size={18}
-                className={
-                  isInWatchlist
-                    ? "fill-yellow-400 text-yellow-400"
-                    : "text-slate-400"
-                }
-              />
+            <div className="flex flex-col gap-3 md:flex-row">
+              <button
+                onClick={() => {
+                  if (isInWatchlist) {
+                    dispatch(removeFromWatchlist(coin.id));
+                  } else {
+                    dispatch(addToWatchlist(coin));
+                  }
+                }}
+                className="flex cursor-pointer items-center justify-center gap-2 rounded-2xl border border-white/10 bg-white/5 px-5 py-3 transition hover:bg-white/10"
+              >
+                <Star
+                  size={18}
+                  className={
+                    isInWatchlist
+                      ? "fill-yellow-400 text-yellow-400"
+                      : "text-slate-400"
+                  }
+                />
 
-              <span>
-                {isInWatchlist ? "Remove Watchlist" : "Add Watchlist"}
-              </span>
-            </button>
+                <span>
+                  {isInWatchlist ? "Remove Watchlist" : "Add Watchlist"}
+                </span>
+              </button>
+              <button
+                onClick={() => setIsPortfolioOpen(true)}
+                className="flex cursor-pointer items-center justify-center gap-2 rounded-2xl border border-white/10 bg-white/5 px-5 py-3 transition hover:bg-white/10"
+              >
+                Add to Portfolio
+              </button>
+            </div>
           </div>
 
           <div className="mt-8 grid gap-4 md:grid-cols-2 xl:grid-cols-4">
@@ -184,6 +229,73 @@ const CoinDetailsPage = () => {
               </div>
             </div>
           </div>
+          {isPortfolioOpen && (
+            <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm p-4">
+              <div className="w-full max-w-md rounded-3xl border border-white/10 bg-[#0f172a] p-6 shadow-2xl">
+                <div className="mb-6">
+                  <h2 className="text-2xl font-bold">
+                    Add {coin.name} to Portfolio
+                  </h2>
+
+                  <p className="mt-1 text-sm text-slate-400">
+                    Enter your investment details
+                  </p>
+                </div>
+
+                <form onSubmit={handleSubmit} className="space-y-5">
+                  <div>
+                    <label className="mb-2 block text-sm text-slate-400">
+                      Quantity
+                    </label>
+
+                    <input
+                      type="text"
+                      name="quantity"
+                      value={formData.quantity}
+                      onChange={handleInputChange}
+                      placeholder="Enter quantity"
+                      className="w-full rounded-2xl border border-white/10 bg-[#020617] px-4 py-3 outline-none transition focus:border-blue-500"
+                    />
+                  </div>
+
+                  <div>
+                    <label className="mb-2 block text-sm text-slate-400">
+                      Buy Price
+                    </label>
+
+                    <input
+                      type="text"
+                      name="buyPrice"
+                      value={formData.buyPrice}
+                      onChange={handleInputChange}
+                      placeholder="Enter buy price"
+                      className="w-full rounded-2xl border border-white/10 bg-[#020617] px-4 py-3 outline-none transition focus:border-blue-500"
+                    />
+                  </div>
+
+                  <div className="mt-6 flex gap-3">
+                    <button
+                      type="button"
+                      onClick={() => {
+                        setFormData({ quantity: "", buyPrice: "" });
+                        setIsPortfolioOpen(false);
+                      }}
+                      className="flex-1 cursor-pointer rounded-2xl border border-white/10 bg-white/5 py-3 transition hover:bg-white/10"
+                    >
+                      Cancel
+                    </button>
+
+                    <button
+                      type="submit"
+                      className="flex-1 cursor-pointer rounded-2xl bg-blue-500 py-3 font-medium transition hover:bg-blue-600"
+                    >
+                      Add Holding
+                    </button>
+                  </div>
+                </form>
+              </div>
+            </div>
+          )}
         </div>
       )}
     </AppLayout>

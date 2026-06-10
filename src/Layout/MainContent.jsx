@@ -44,7 +44,7 @@ const MainContent = ({ query }) => {
     dispatch(getMarketData());
   }, [dispatch]);
   return (
-    <div className="h-[calc(100vh-80px)] main-content-container  overflow-y-auto bg-[#020617] p-6">
+    <div className="h-[calc(100vh-80px)] hideScrollbar  overflow-y-auto bg-[#020617] p-6">
       {loading ? (
         <LoadingSkeleton />
       ) : error ? (

@@ -71,7 +71,7 @@ const Sidebar = ({ isSidebarOpen, setIsSidebarOpen }) => {
       >
         <X size={25} />
       </button>
-      <div className="p-2 w-[240px]  bg-[#071024] h-screen overflow-y-scroll sideBar-Container border-r border-white/10 p-4">
+      <div className="p-2 w-[240px]  bg-[#071024] h-screen overflow-y-scroll hideScrollbar border-r border-white/10 p-4">
         {/* Logo */}
         <div onClick={() => navigate("/")}>
           <div className="flex items-center gap-3">
