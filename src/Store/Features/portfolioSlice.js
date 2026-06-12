@@ -1,7 +1,17 @@
 import { createSlice } from "@reduxjs/toolkit";
 
+let holdings = [];
+
+try {
+  const storedHoldings = localStorage.getItem("holdings");
+  if (storedHoldings) {
+    holdings = JSON.parse(storedHoldings);
+  }
+} catch (error) {
+  console.error("Faild to load stored holdings", error);
+}
 const initialState = {
-  holdings: [],
+  holdings: holdings,
 };
 
 const portfolioSlice = createSlice({
@@ -21,11 +31,13 @@ const portfolioSlice = createSlice({
       } else {
         state.holdings.push(action.payload);
       }
+      localStorage.setItem("holdings", JSON.stringify(state.holdings));
     },
     removeHolding: (state, action) => {
       state.holdings = state.holdings.filter(
         (coin) => coin.id !== action.payload,
       );
+      localStorage.setItem("holdings", JSON.stringify(state.holdings));
     },
   },
 });

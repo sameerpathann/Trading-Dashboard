@@ -1,9 +1,59 @@
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import AppLayout from "../Layout/AppLayout";
+import { removeHolding } from "../Store/Features/portfolioSlice";
+import PortfolioCard from "../Components/Common/PortfolioCard";
+import { useEffect } from "react";
+import { getMarketData } from "../Store/Features/marketSlice";
 
 const PortfolioPage = () => {
   const { holdings } = useSelector((state) => state.portfolio);
+  const { marketCoins } = useSelector((state) => state.market);
 
+  const dispatch = useDispatch();
+  const handleRemove = (id) => {
+    if (window.confirm("Are you Sure ?")) {
+      dispatch(removeHolding(id));
+    }
+  };
+
+  useEffect(() => {
+    if (marketCoins.length === 0) dispatch(getMarketData());
+  }, [dispatch, marketCoins.length]);
+
+  const portFolioData = holdings
+    .map((holding) => {
+      const marketCoin = marketCoins.find((coin) => coin.id === holding.id);
+
+      if (!marketCoin) return null;
+      const totalInvestment = holding.quantity * holding.buyPrice;
+      const currentValue = holding.quantity * marketCoin.current_price;
+      const profit = currentValue - totalInvestment;
+      const profitPercentage =
+        totalInvestment > 0 ? (profit / totalInvestment) * 100 : 0;
+      return {
+        ...holding,
+        totalInvestment,
+        currentValue,
+        profit,
+        profitPercentage,
+        currentPrice: marketCoin.current_price,
+      };
+    })
+    .filter(Boolean);
+
+  const totalInvestment = portFolioData.reduce(
+    (total, coin) => total + coin.totalInvestment,
+    0,
+  );
+
+  const totalCurrentValue = portFolioData.reduce(
+    (total, coin) => total + coin.currentValue,
+    0,
+  );
+
+  const totalProfit = totalCurrentValue - totalInvestment;
+  const profitPercentage =
+    totalInvestment > 0 ? (totalProfit / totalInvestment) * 100 : 0;
   return (
     <AppLayout>
       {() => (
@@ -16,49 +66,55 @@ const PortfolioPage = () => {
                   Manage your crypto investments
                 </p>
               </div>
+              <div className="grid gap-4 md:grid-cols-3">
+                <div className="rounded-3xl border border-white/10 bg-[#0f172a] p-5">
+                  <p className="text-sm text-slate-400">Total Investment</p>
 
-              <div className="grid gap-4">
-                {holdings.map((coin) => (
-                  <div
-                    key={coin.id}
-                    className="flex flex-col gap-4 rounded-3xl border border-white/10 bg-[#0f172a] p-5 md:flex-row md:items-center md:justify-between"
+                  <h2 className="mt-2 text-2xl font-bold">
+                    ${totalInvestment.toLocaleString()}
+                  </h2>
+                </div>
+
+                <div className="rounded-3xl border border-white/10 bg-[#0f172a] p-5">
+                  <p className="text-sm text-slate-400">Current Value</p>
+
+                  <h2 className="mt-2 text-2xl font-bold">
+                    ${totalCurrentValue.toLocaleString()}
+                  </h2>
+                </div>
+
+                <div className="rounded-3xl border border-white/10 bg-[#0f172a] p-5">
+                  <p className="text-sm text-slate-400">Profit / Loss</p>
+
+                  <h2
+                    className={`mt-2 text-2xl font-bold ${
+                      totalProfit >= 0 ? "text-green-400" : "text-red-400"
+                    }`}
                   >
-                    <div className="flex items-center gap-4">
-                      <img
-                        src={coin.image}
-                        alt={coin.name}
-                        className="h-12 w-12"
-                      />
+                    $
+                    {totalProfit.toLocaleString(undefined, {
+                      minimumFractionDigits: 2,
+                      maximumFractionDigits: 2,
+                    })}
+                  </h2>
 
-                      <div>
-                        <h2 className="text-xl font-semibold">{coin.name}</h2>
-
-                        <p className="uppercase text-slate-400">
-                          {coin.symbol}
-                        </p>
-                      </div>
-                    </div>
-
-                    <div className="flex gap-8">
-                      <div>
-                        <p className="text-sm text-slate-400">Quantity</p>
-
-                        <h3 className="font-semibold">{coin.quantity}</h3>
-                      </div>
-
-                      <div>
-                        <p className="text-sm text-slate-400">Buy Price</p>
-
-                        <h3 className="font-semibold">
-                          ${coin.buyPrice.toLocaleString()}
-                        </h3>
-                      </div>
-                    </div>
-
-                    <button className="rounded-2xl border border-red-500/30 bg-red-500/10 px-5 py-2 text-red-400 transition hover:bg-red-500/20 cursor-pointer">
-                      Remove
-                    </button>
-                  </div>
+                  <p
+                    className={`mt-1 text-sm font-medium ${
+                      totalProfit >= 0 ? "text-green-400" : "text-red-400"
+                    }`}
+                  >
+                    {totalProfit >= 0 ? "+" : ""}
+                    {profitPercentage.toFixed(2)}%
+                  </p>
+                </div>
+              </div>
+              <div className="grid gap-4">
+                {portFolioData.map((coin) => (
+                  <PortfolioCard
+                    key={coin.id}
+                    coin={coin}
+                    handleRemove={handleRemove}
+                  />
                 ))}
               </div>
             </div>
