@@ -39,9 +39,19 @@ const portfolioSlice = createSlice({
       );
       localStorage.setItem("holdings", JSON.stringify(state.holdings));
     },
+    updateHolding: (state, action) => {
+      const { id, quantity, buyPrice } = action.payload;
+      const holding = state.holdings.find((coin) => coin.id === id);
+      if (holding) {
+        holding.quantity = quantity;
+        holding.buyPrice = buyPrice;
+      }
+      localStorage.setItem("holdings", JSON.stringify(state.holdings));
+    },
   },
 });
 
 export default portfolioSlice.reducer;
 
-export const { addHolding, removeHolding } = portfolioSlice.actions;
+export const { addHolding, removeHolding, updateHolding } =
+  portfolioSlice.actions;
