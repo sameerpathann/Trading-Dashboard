@@ -4,6 +4,7 @@ import { removeHolding, updateHolding } from "../Store/Features/portfolioSlice";
 import PortfolioCard from "../Components/Common/PortfolioCard";
 import { useEffect, useState } from "react";
 import { getMarketData } from "../Store/Features/marketSlice";
+import { createPortfolioData } from "../Utils/portfolioUtils";
 
 const PortfolioPage = () => {
   const [isEditOpen, setIsEditOpen] = useState(false);
@@ -65,26 +66,7 @@ const PortfolioPage = () => {
     if (marketCoins.length === 0) dispatch(getMarketData());
   }, [dispatch, marketCoins.length]);
 
-  const portFolioData = holdings
-    .map((holding) => {
-      const marketCoin = marketCoins.find((coin) => coin.id === holding.id);
-
-      if (!marketCoin) return null;
-      const totalInvestment = holding.quantity * holding.buyPrice;
-      const currentValue = holding.quantity * marketCoin.current_price;
-      const profit = currentValue - totalInvestment;
-      const profitPercentage =
-        totalInvestment > 0 ? (profit / totalInvestment) * 100 : 0;
-      return {
-        ...holding,
-        totalInvestment,
-        currentValue,
-        profit,
-        profitPercentage,
-        currentPrice: marketCoin.current_price,
-      };
-    })
-    .filter(Boolean);
+  const portFolioData = createPortfolioData(holdings, marketCoins);
 
   const filteredPortfolioData = portFolioData.filter((coin) => {
     return (
