@@ -8,6 +8,7 @@ import { getMarketData } from "../Store/Features/marketSlice";
 const PortfolioPage = () => {
   const [isEditOpen, setIsEditOpen] = useState(false);
   const [selectedCoin, setSelectedCoin] = useState(null);
+  const [search, setSearch] = useState("");
   const [formData, setFormData] = useState({
     quantity: "",
     buyPrice: "",
@@ -84,7 +85,14 @@ const PortfolioPage = () => {
       };
     })
     .filter(Boolean);
-  const sortedPortfolioData = [...portFolioData].sort((a, b) => {
+
+  const filteredPortfolioData = portFolioData.filter((coin) => {
+    return (
+      coin.name.toLowerCase().includes(search.toLowerCase()) ||
+      coin.symbol.toLowerCase().includes(search.toLowerCase())
+    );
+  });
+  const sortedPortfolioData = [...filteredPortfolioData].sort((a, b) => {
     if (sortBy === "profit-high") {
       return b.profit - a.profit;
     }
@@ -117,6 +125,18 @@ const PortfolioPage = () => {
   const profitPercentage =
     totalInvestment > 0 ? (totalProfit / totalInvestment) * 100 : 0;
 
+  const topGainer =
+    sortedPortfolioData.length > 0
+      ? sortedPortfolioData.reduce((max, coin) =>
+          coin.profitPercentage > max.profitPercentage ? coin : max,
+        )
+      : null;
+  const topLoser =
+    sortedPortfolioData.length > 0
+      ? sortedPortfolioData.reduce((min, coin) =>
+          coin.profitPercentage < min.profitPercentage ? coin : min,
+        )
+      : null;
   return (
     <AppLayout>
       {() => (
@@ -126,14 +146,21 @@ const PortfolioPage = () => {
               <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
                 <div>
                   <h1 className="text-3xl font-bold">My Portfolio</h1>
+
                   <p className="mt-2 text-slate-400">
                     Manage your crypto investments
                   </p>
                 </div>
-                <div className="md:px-5">
-                  <h1 className="md:mb-2 md:text-xl md:font-medium md:text-center">
-                    Sort By
-                  </h1>
+
+                <div className="flex flex-col md:flex-row gap-3">
+                  <input
+                    type="text"
+                    placeholder="Search coin..."
+                    value={search}
+                    onChange={(e) => setSearch(e.target.value)}
+                    className="rounded-xl border border-white/10 bg-[#0f172a] px-4 py-2 text-white outline-none focus:border-blue-500"
+                  />
+
                   <select
                     value={sortBy}
                     onChange={(e) => setSortBy(e.target.value)}
@@ -190,6 +217,81 @@ const PortfolioPage = () => {
                   </p>
                 </div>
               </div>
+              {topGainer && topLoser && (
+                <div className="grid gap-4 md:grid-cols-2">
+                  <div className="rounded-3xl border border-green-500/20 bg-green-500/10 p-5">
+                    <p className="text-sm text-green-400 font-medium">
+                      🚀 Top Gainer
+                    </p>
+
+                    <div className="mt-3 flex items-center gap-3">
+                      <img
+                        src={topGainer.image}
+                        alt={topGainer.name}
+                        className="h-10 w-10"
+                      />
+
+                      <div>
+                        <h3 className="text-lg font-bold">{topGainer.name}</h3>
+
+                        <p className="uppercase text-slate-400">
+                          {topGainer.symbol}
+                        </p>
+                      </div>
+                    </div>
+
+                    <div className="mt-4">
+                      <p className="text-2xl font-bold text-green-400">
+                        +{topGainer.profitPercentage.toFixed(2)}%
+                      </p>
+
+                      <p className="text-sm text-green-300">
+                        +$
+                        {topGainer.profit.toLocaleString(undefined, {
+                          minimumFractionDigits: 2,
+                          maximumFractionDigits: 2,
+                        })}
+                      </p>
+                    </div>
+                  </div>
+
+                  <div className="rounded-3xl border border-red-500/20 bg-red-500/10 p-5">
+                    <p className="text-sm text-red-400 font-medium">
+                      📉 Top Loser
+                    </p>
+
+                    <div className="mt-3 flex items-center gap-3">
+                      <img
+                        src={topLoser.image}
+                        alt={topLoser.name}
+                        className="h-10 w-10"
+                      />
+
+                      <div>
+                        <h3 className="text-lg font-bold">{topLoser.name}</h3>
+
+                        <p className="uppercase text-slate-400">
+                          {topLoser.symbol}
+                        </p>
+                      </div>
+                    </div>
+
+                    <div className="mt-4">
+                      <p className="text-2xl font-bold text-red-400">
+                        {topLoser.profitPercentage.toFixed(2)}%
+                      </p>
+
+                      <p className="text-sm text-red-300">
+                        $
+                        {topLoser.profit.toLocaleString(undefined, {
+                          minimumFractionDigits: 2,
+                          maximumFractionDigits: 2,
+                        })}
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              )}
               <div className="grid gap-4">
                 {sortedPortfolioData.map((coin) => (
                   <PortfolioCard
