@@ -29,7 +29,12 @@ const watchlistSlice = createSlice({
       state.coins = state.coins.filter((coin) => coin.id !== action.payload);
       localStorage.setItem("watchlist", JSON.stringify(state.coins));
     },
+    clearWatchlist: (state) => {
+      state.coins = [];
+      localStorage.removeItem("watchlist");
+    },
   },
 });
-export const { addToWatchlist, removeFromWatchlist } = watchlistSlice.actions;
+export const { addToWatchlist, removeFromWatchlist, clearWatchlist } =
+  watchlistSlice.actions;
 export default watchlistSlice.reducer;

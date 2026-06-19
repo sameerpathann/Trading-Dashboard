@@ -48,10 +48,14 @@ const portfolioSlice = createSlice({
       }
       localStorage.setItem("holdings", JSON.stringify(state.holdings));
     },
+    clearHoldings: (state) => {
+      state.holdings = [];
+      localStorage.removeItem("holdings");
+    },
   },
 });
 
 export default portfolioSlice.reducer;
 
-export const { addHolding, removeHolding, updateHolding } =
+export const { addHolding, removeHolding, updateHolding, clearHoldings } =
   portfolioSlice.actions;
