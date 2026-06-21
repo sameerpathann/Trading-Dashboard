@@ -8,10 +8,10 @@ import {
   YAxis,
 } from "recharts";
 import { useSelector } from "react-redux";
-import { chartData } from "../../Data/chartData";
 
-const PriceChart = () => {
+const PriceChart = ({ activeTimeframe }) => {
   const { theme } = useSelector((state) => state.theme);
+  const { chartData } = useSelector((state) => state.chart);
 
   return (
     <div className="h-[420px] min-w-0 w-full">
@@ -35,11 +35,45 @@ const PriceChart = () => {
           />
 
           <XAxis
-            dataKey="day"
+            dataKey="timestamp"
             axisLine={false}
             tickLine={false}
             tick={{
               fill: theme === "dark" ? "#94a3b8" : "#64748b",
+            }}
+            tickFormatter={(value) => {
+              const date = new Date(value);
+
+              if (activeTimeframe === "1H") {
+                return date.toLocaleTimeString([], {
+                  hour: "2-digit",
+                  minute: "2-digit",
+                });
+              }
+
+              if (activeTimeframe === "1D") {
+                return date.toLocaleTimeString([], {
+                  hour: "2-digit",
+                });
+              }
+
+              if (activeTimeframe === "1W") {
+                return date.toLocaleDateString([], {
+                  weekday: "short",
+                });
+              }
+
+              if (activeTimeframe === "1M") {
+                return date.toLocaleDateString([], {
+                  day: "numeric",
+                  month: "short",
+                });
+              }
+
+              return date.toLocaleDateString([], {
+                month: "short",
+                year: "2-digit",
+              });
             }}
           />
 
@@ -49,10 +83,15 @@ const PriceChart = () => {
             tick={{
               fill: theme === "dark" ? "#94a3b8" : "#64748b",
             }}
-            tickFormatter={(value) => `$${value / 1000}k`}
+            tickFormatter={(value) => `$${(value / 1000).toFixed(0)}k`}
           />
 
           <Tooltip
+            labelFormatter={(value) => new Date(value).toLocaleString()}
+            formatter={(value) => [
+              `$${Number(value).toLocaleString()}`,
+              "Price",
+            ]}
             contentStyle={{
               backgroundColor: theme === "dark" ? "#0f172a" : "#ffffff",
               border:
@@ -79,7 +118,6 @@ const PriceChart = () => {
             stroke="#3b82f6"
             strokeWidth={3}
             dot={false}
-            isAnimationActive
             animationDuration={1000}
             activeDot={{
               r: 6,
