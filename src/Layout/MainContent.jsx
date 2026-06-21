@@ -15,6 +15,7 @@ const MainContent = ({ query }) => {
   const timeframeButtons = ["1H", "1D", "1W", "1M", "1Y"];
   const [sortOrder, setSortOrder] = useState("default");
   const { marketCoins, loading, error } = useSelector((state) => state.market);
+  const { theme } = useSelector((state) => state.theme);
   const dispatch = useDispatch();
   const filteredMarketData = marketCoins.filter((item) =>
     item.name.toLowerCase().includes(query?.toLowerCase() || ""),
@@ -44,7 +45,13 @@ const MainContent = ({ query }) => {
     dispatch(getMarketData());
   }, [dispatch]);
   return (
-    <div className="h-[calc(100vh-80px)] hideScrollbar  overflow-y-auto bg-[#020617] p-6">
+    <div
+      className={`h-[calc(100vh-80px)] hideScrollbar overflow-y-auto p-6 transition-colors duration-300 ${
+        theme === "dark"
+          ? "bg-[#020617] text-white"
+          : "bg-slate-100 text-slate-900"
+      }`}
+    >
       {loading ? (
         <LoadingSkeleton />
       ) : error ? (
@@ -71,7 +78,13 @@ const MainContent = ({ query }) => {
               <div>
                 <h2 className="text-2xl font-bold">Bitcoin Price</h2>
 
-                <p className="mt-1 text-slate-400">BTC / USD</p>
+                <p
+                  className={`mt-1 ${
+                    theme === "dark" ? "text-slate-400" : "text-slate-500"
+                  }`}
+                >
+                  BTC / USD
+                </p>
               </div>
 
               <div className="flex items-center gap-2">
@@ -89,7 +102,13 @@ const MainContent = ({ query }) => {
                 ))}
               </div>
             </div>
-            <div className="mt-6 rounded-3xl border border-dashed border-white/10 bg-[#020617] p-4">
+            <div
+              className={`mt-6 rounded-3xl border border-dashed p-4 transition-all duration-300 ${
+                theme === "dark"
+                  ? "border-white/10 bg-[#020617]"
+                  : "border-slate-300 bg-slate-50"
+              }`}
+            >
               <PriceChart />
             </div>
           </SectionWrapper>
@@ -102,13 +121,25 @@ const MainContent = ({ query }) => {
               <table className="h-full w-full border-separate border-spacing-y-3">
                 <thead>
                   <tr>
-                    <th className="text-left text-sm font-medium text-slate-400">
+                    <th
+                      className={`text-left text-sm font-medium ${
+                        theme === "dark" ? "text-slate-400" : "text-slate-500"
+                      }`}
+                    >
                       Watchlist
                     </th>
-                    <th className="text-left text-sm font-medium text-slate-400">
+                    <th
+                      className={`text-left text-sm font-medium ${
+                        theme === "dark" ? "text-slate-400" : "text-slate-500"
+                      }`}
+                    >
                       Coin
                     </th>
-                    <th className="text-left text-sm font-medium text-slate-400">
+                    <th
+                      className={`text-left text-sm font-medium ${
+                        theme === "dark" ? "text-slate-400" : "text-slate-500"
+                      }`}
+                    >
                       <Button
                         className="cursor-pointer flex items-center gap-1.5"
                         variant="secondary"
@@ -130,13 +161,25 @@ const MainContent = ({ query }) => {
                         {renderSortIcon()}
                       </Button>
                     </th>
-                    <th className="text-left text-sm font-medium text-slate-400">
+                    <th
+                      className={`text-left text-sm font-medium ${
+                        theme === "dark" ? "text-slate-400" : "text-slate-500"
+                      }`}
+                    >
                       24h %
                     </th>
-                    <th className="text-left text-sm font-medium text-slate-400">
+                    <th
+                      className={`text-left text-sm font-medium ${
+                        theme === "dark" ? "text-slate-400" : "text-slate-500"
+                      }`}
+                    >
                       Market Cap
                     </th>
-                    <th className="text-left text-sm font-medium text-slate-400">
+                    <th
+                      className={`text-left text-sm font-medium ${
+                        theme === "dark" ? "text-slate-400" : "text-slate-500"
+                      }`}
+                    >
                       Volume
                     </th>
                   </tr>
@@ -150,7 +193,9 @@ const MainContent = ({ query }) => {
                     <tr>
                       <td
                         colSpan={5}
-                        className="py-10 text-center text-slate-500"
+                        className={`py-10 text-center ${
+                          theme === "dark" ? "text-slate-500" : "text-slate-600"
+                        }`}
                       >
                         No assets found.
                       </td>

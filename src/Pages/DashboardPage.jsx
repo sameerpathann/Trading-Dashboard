@@ -9,11 +9,14 @@ import PortfolioSnapshotCard from "../Components/Common/PortfolioSnapshotCard";
 import { ArrowRight } from "lucide-react";
 import { Link } from "react-router-dom";
 import MarketOverviewCard from "../Components/Common/MarketOverviewCard";
+import LoadingSkeleton from "../Components/Common/LoadingSkeleton";
+import ErrorState from "../Components/Common/ErrorState";
 
 const DashboardPage = () => {
   const { marketCoins, loading, error } = useSelector((state) => state.market);
   const { holdings } = useSelector((state) => state.portfolio);
   const { coins } = useSelector((state) => state.watchlist);
+  const { theme } = useSelector((state) => state.theme);
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -80,17 +83,30 @@ const DashboardPage = () => {
   return (
     <AppLayout>
       {() => (
-        <div className="h-[calc(100vh-80px)] overflow-y-auto hideScrollbar bg-[#020617] p-6 text-white">
+        <div
+          className={`h-[calc(100vh-80px)] overflow-y-auto hideScrollbar p-6 transition-colors duration-300 ${
+            theme === "dark"
+              ? "bg-[#020617] text-white"
+              : "bg-slate-100 text-slate-900"
+          }`}
+        >
           {loading ? (
-            <h1>Loading...</h1>
+            <LoadingSkeleton />
           ) : error ? (
-            <h1>{error}</h1>
+            <ErrorState
+              error={error}
+              onRetry={() => dispatch(getMarketData())}
+            />
           ) : (
             <div className="space-y-6">
               <div>
                 <h1 className="text-3xl font-bold">Dashboard</h1>
 
-                <p className="mt-2 text-slate-400">
+                <p
+                  className={`mt-2 ${
+                    theme === "dark" ? "text-slate-400" : "text-slate-500"
+                  }`}
+                >
                   Overview of your crypto portfolio and market
                 </p>
               </div>
@@ -136,7 +152,13 @@ const DashboardPage = () => {
                   <h2 className="text-2xl font-bold">Portfolio Snapshot</h2>
 
                   <Link to={"/portfolio"}>
-                    <button className="cursor-pointer flex items-center gap-2 rounded-xl border border-white/10 bg-[#0f172a] px-4 py-2 transition-all duration-300 hover:border-blue-500/50 hover:bg-[#172036]">
+                    <button
+                      className={`cursor-pointer flex items-center gap-2 rounded-xl border px-4 py-2 transition-all duration-300 hover:-translate-y-1 ${
+                        theme === "dark"
+                          ? "border-white/10 bg-[#0f172a] hover:border-blue-500/50 hover:bg-[#172036]"
+                          : "border-slate-200 bg-white hover:border-blue-400 hover:bg-slate-50"
+                      }`}
+                    >
                       View Portfolio <ArrowRight size={20} />
                     </button>
                   </Link>
@@ -152,7 +174,11 @@ const DashboardPage = () => {
                 <div>
                   <h2 className="text-2xl font-bold">Market Overview</h2>
 
-                  <p className="mt-1 text-slate-400">
+                  <p
+                    className={`mt-1 ${
+                      theme === "dark" ? "text-slate-400" : "text-slate-500"
+                    }`}
+                  >
                     Current market performance summary
                   </p>
                 </div>

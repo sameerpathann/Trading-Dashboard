@@ -17,7 +17,7 @@ const PortfolioPage = () => {
   const [sortBy, setSortBy] = useState("default");
   const { holdings } = useSelector((state) => state.portfolio);
   const { marketCoins } = useSelector((state) => state.market);
-
+  const { theme } = useSelector((state) => state.theme);
   const dispatch = useDispatch();
   const handleRemove = (id) => {
     if (window.confirm("Are you Sure ?")) {
@@ -122,31 +122,54 @@ const PortfolioPage = () => {
   return (
     <AppLayout>
       {() => (
-        <div className="h-[calc(100vh-80px)] overflow-y-auto hideScrollbar bg-[#020617] p-6 text-white">
+        <div
+          className={`h-[calc(100vh-80px)] overflow-y-auto hideScrollbar p-6 transition-colors duration-300 ${
+            theme === "dark"
+              ? "bg-[#020617] text-white"
+              : "bg-slate-100 text-slate-900"
+          }`}
+        >
           {holdings.length > 0 ? (
             <div className="space-y-6">
               <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
                 <div>
-                  <h1 className="text-3xl font-bold">My Portfolio</h1>
+                  <h1
+                    className={`text-3xl font-bold ${
+                      theme === "dark" ? "text-white" : "text-slate-900"
+                    }`}
+                  >
+                    My Portfolio
+                  </h1>
 
-                  <p className="mt-2 text-slate-400">
+                  <p
+                    className={`mt-2 ${
+                      theme === "dark" ? "text-slate-400" : "text-slate-500"
+                    }`}
+                  >
                     Manage your crypto investments
                   </p>
                 </div>
-
                 <div className="flex flex-col md:flex-row gap-3">
                   <input
                     type="text"
                     placeholder="Search coin..."
                     value={search}
                     onChange={(e) => setSearch(e.target.value)}
-                    className="rounded-xl border border-white/10 bg-[#0f172a] px-4 py-2 text-white outline-none focus:border-blue-500"
+                    className={`rounded-xl border px-4 py-2 outline-none transition-all duration-300 focus:border-blue-500 ${
+                      theme === "dark"
+                        ? "border-white/10 bg-[#0f172a] text-white"
+                        : "border-slate-200 bg-white text-slate-900"
+                    }`}
                   />
 
                   <select
                     value={sortBy}
                     onChange={(e) => setSortBy(e.target.value)}
-                    className="rounded-xl cursor-pointer border border-white/10 bg-[#0f172a] px-4 py-2 text-white outline-none"
+                    className={`cursor-pointer rounded-xl border px-4 py-2 outline-none transition-all duration-300 ${
+                      theme === "dark"
+                        ? "border-white/10 bg-[#0f172a] text-white"
+                        : "border-slate-200 bg-white text-slate-900"
+                    }`}
                   >
                     <option value="default">Default</option>
                     <option value="profit-high">Profit High to Low</option>
@@ -158,24 +181,60 @@ const PortfolioPage = () => {
               </div>
 
               <div className="grid gap-4 md:grid-cols-3">
-                <div className="rounded-3xl border border-white/10 bg-[#0f172a] p-5">
-                  <p className="text-sm text-slate-400">Total Investment</p>
+                <div
+                  className={`rounded-3xl border p-5 transition-all duration-300 hover:-translate-y-1 ${
+                    theme === "dark"
+                      ? "border-white/10 bg-[#0f172a]"
+                      : "border-slate-200 bg-white"
+                  }`}
+                >
+                  <p
+                    className={`text-sm {${
+                      theme === "dark" ? "text-slate-400" : "text-slate-500"
+                    }`}
+                  >
+                    Total Investment
+                  </p>
 
                   <h2 className="mt-2 text-2xl font-bold">
                     ${totalInvestment.toLocaleString()}
                   </h2>
                 </div>
 
-                <div className="rounded-3xl border border-white/10 bg-[#0f172a] p-5">
-                  <p className="text-sm text-slate-400">Current Value</p>
+                <div
+                  className={`rounded-3xl border p-5 transition-all duration-300 hover:-translate-y-1 ${
+                    theme === "dark"
+                      ? "border-white/10 bg-[#0f172a]"
+                      : "border-slate-200 bg-white"
+                  }`}
+                >
+                  <p
+                    className={`text-sm {${
+                      theme === "dark" ? "text-slate-400" : "text-slate-500"
+                    }`}
+                  >
+                    Current Value
+                  </p>
 
                   <h2 className="mt-2 text-2xl font-bold">
                     ${totalCurrentValue.toLocaleString()}
                   </h2>
                 </div>
 
-                <div className="rounded-3xl border border-white/10 bg-[#0f172a] p-5">
-                  <p className="text-sm text-slate-400">Profit / Loss</p>
+                <div
+                  className={`rounded-3xl border p-5 transition-all duration-300 hover:-translate-y-1 ${
+                    theme === "dark"
+                      ? "border-white/10 bg-[#0f172a]"
+                      : "border-slate-200 bg-white"
+                  }`}
+                >
+                  <p
+                    className={`text-sm {${
+                      theme === "dark" ? "text-slate-400" : "text-slate-500"
+                    }`}
+                  >
+                    Profit / Loss
+                  </p>
 
                   <h2
                     className={`mt-2 text-2xl font-bold ${
@@ -290,7 +349,11 @@ const PortfolioPage = () => {
               <div className="text-center">
                 <h1 className="text-3xl font-bold">Portfolio is Empty</h1>
 
-                <p className="mt-2 text-slate-400">
+                <p
+                  className={`mt-2 ${
+                    theme === "dark" ? "text-slate-400" : "text-slate-500"
+                  }`}
+                >
                   Add your first crypto holding to start tracking your
                   investments
                 </p>
@@ -299,13 +362,23 @@ const PortfolioPage = () => {
           )}
           {isEditOpen && (
             <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm p-4 transition-all duration-200">
-              <div className="w-full max-w-md rounded-3xl border border-white/10 bg-[#0f172a] p-6 shadow-2xl">
+              <div
+                className={`w-full max-w-md rounded-3xl border p-6 shadow-2xl ${
+                  theme === "dark"
+                    ? "border-white/10 bg-[#0f172a] text-white"
+                    : "border-slate-200 bg-white text-slate-900"
+                }`}
+              >
                 <div className="mb-6">
                   <h2 className="text-2xl font-bold">
                     Edit {selectedCoin.name}
                   </h2>
 
-                  <p className="mt-1 text-sm text-slate-400">
+                  <p
+                    className={`mt-1 text-sm ${
+                      theme === "dark" ? "text-slate-400" : "text-slate-500"
+                    }`}
+                  >
                     Update your investment details
                   </p>
                 </div>
@@ -321,7 +394,11 @@ const PortfolioPage = () => {
                       name="quantity"
                       value={formData.quantity}
                       onChange={handleInputChange}
-                      className="w-full rounded-2xl border border-white/10 bg-[#020617] px-4 py-3 outline-none focus:border-blue-500"
+                      className={`w-full rounded-2xl border px-4 py-3 outline-none transition-all duration-300 focus:border-blue-500 ${
+                        theme === "dark"
+                          ? "border-white/10 bg-[#020617] text-white"
+                          : "border-slate-200 bg-slate-50 text-slate-900"
+                      }`}
                     />
                   </div>
 
@@ -335,7 +412,11 @@ const PortfolioPage = () => {
                       name="buyPrice"
                       value={formData.buyPrice}
                       onChange={handleInputChange}
-                      className="w-full rounded-2xl border border-white/10 bg-[#020617] px-4 py-3 outline-none focus:border-blue-500"
+                      className={`w-full rounded-2xl border px-4 py-3 outline-none transition-all duration-300 focus:border-blue-500 ${
+                        theme === "dark"
+                          ? "border-white/10 bg-[#020617] text-white"
+                          : "border-slate-200 bg-slate-50 text-slate-900"
+                      }`}
                     />
                   </div>
 
@@ -350,7 +431,11 @@ const PortfolioPage = () => {
                           buyPrice: "",
                         });
                       }}
-                      className="flex-1 rounded-2xl border border-white/10 bg-white/5 py-3 cursor-pointer"
+                      className={`flex-1 rounded-2xl border py-3 cursor-pointer transition-all duration-300 hover:scale-105 ${
+                        theme === "dark"
+                          ? "border-white/10 bg-white/5 hover:bg-white/10"
+                          : "border-slate-200 bg-slate-100 hover:bg-slate-200"
+                      }`}
                     >
                       Cancel
                     </button>
@@ -358,7 +443,7 @@ const PortfolioPage = () => {
                     <button
                       type="button"
                       onClick={handleSave}
-                      className="flex-1 rounded-2xl bg-blue-500 py-3 font-medium cursor-pointer hover:bg-blue-600 transition"
+                      className="flex-1 rounded-2xl bg-blue-500 py-3 font-medium cursor-pointer transition-all duration-300 hover:scale-105 hover:bg-blue-600"
                     >
                       Save Changes
                     </button>

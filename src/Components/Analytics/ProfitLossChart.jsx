@@ -9,8 +9,11 @@ import {
   CartesianGrid,
   Cell,
 } from "recharts";
+import { useSelector } from "react-redux";
 
 const ProfitLossChart = ({ profitLossChartData }) => {
+  const { theme } = useSelector((state) => state.theme);
+
   return (
     <ResponsiveContainer width="100%" height={350}>
       <BarChart
@@ -22,35 +25,57 @@ const ProfitLossChart = ({ profitLossChartData }) => {
           bottom: 10,
         }}
       >
-        <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.08)" />
+        <CartesianGrid
+          strokeDasharray="3 3"
+          stroke={
+            theme === "dark" ? "rgba(255,255,255,0.08)" : "rgba(15,23,42,0.08)"
+          }
+        />
 
         <XAxis
           dataKey="name"
-          tick={{ fill: "#94a3b8" }}
+          tick={{
+            fill: theme === "dark" ? "#94a3b8" : "#64748b",
+          }}
           axisLine={false}
           tickLine={false}
         />
 
-        <YAxis tick={{ fill: "#94a3b8" }} axisLine={false} tickLine={false} />
+        <YAxis
+          tick={{
+            fill: theme === "dark" ? "#94a3b8" : "#64748b",
+          }}
+          axisLine={false}
+          tickLine={false}
+        />
 
         <Tooltip
           cursor={false}
           contentStyle={{
-            backgroundColor: "#0f172a",
-            border: "1px solid rgba(255,255,255,0.1)",
+            backgroundColor: theme === "dark" ? "#0f172a" : "#ffffff",
+            border:
+              theme === "dark"
+                ? "1px solid rgba(255,255,255,0.1)"
+                : "1px solid #e2e8f0",
             borderRadius: "16px",
-            color: "#fff",
+            color: theme === "dark" ? "#ffffff" : "#0f172a",
+            boxShadow:
+              theme === "dark" ? "none" : "0 10px 30px rgba(0,0,0,0.08)",
           }}
           formatter={(value) => [`$${Number(value).toLocaleString()}`]}
         />
 
-        <Legend />
+        <Legend
+          wrapperStyle={{
+            color: theme === "dark" ? "#cbd5e1" : "#64748b",
+          }}
+        />
 
         <Bar
           dataKey="profit"
           name="Profit / Loss"
           radius={[8, 8, 0, 0]}
-          isAnimationActive={true}
+          isAnimationActive
           animationDuration={1000}
         >
           {profitLossChartData.map((coin, index) => (

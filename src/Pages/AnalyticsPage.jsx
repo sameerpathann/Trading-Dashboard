@@ -8,12 +8,14 @@ import InvestmentComparisonChart from "../Components/Analytics/InvestmentCompari
 import ProfitLossChart from "../Components/Analytics/ProfitLossChart";
 import StatsCard from "../Components/Common/StatsCard";
 import TopHoldingsChart from "../Components/Analytics/TopHoldingsChart";
+import LoadingSkeleton from "../Components/Common/LoadingSkeleton";
+import ErrorState from "../Components/Common/ErrorState";
 
 const AnalyticsPage = () => {
   const dispatch = useDispatch();
   const { marketCoins, error, loading } = useSelector((state) => state.market);
   const { holdings } = useSelector((state) => state.portfolio);
-
+  const theme = useSelector((state) => state.theme.theme);
   useEffect(() => {
     if (marketCoins.length === 0) dispatch(getMarketData());
   }, [dispatch, marketCoins.length]);
@@ -82,11 +84,20 @@ const AnalyticsPage = () => {
   return (
     <AppLayout>
       {() => (
-        <div className="h-[calc(100vh-80px)] overflow-y-auto hideScrollbar bg-[#020617] p-6 text-white">
+        <div
+          className={`h-[calc(100vh-80px)] overflow-y-auto hideScrollbar p-6 transition-colors duration-300 ${
+            theme === "dark"
+              ? "bg-[#020617] text-white"
+              : "bg-slate-100 text-slate-900"
+          }`}
+        >
           {loading ? (
-            <h1>Loading....</h1>
+            <LoadingSkeleton />
           ) : error ? (
-            <h1>{error}</h1>
+            <ErrorState
+              error={error}
+              onRetry={() => dispatch(getMarketData())}
+            />
           ) : (
             <div className="space-y-6">
               <div>
@@ -119,7 +130,13 @@ const AnalyticsPage = () => {
                 <StatsCard title="Total Holdings" value={totalHoldings} />
               </div>
               {pieChartData.length > 0 ? (
-                <div className="rounded-3xl border border-white/10 bg-[#0f172a] p-6 cursor-pointer transition-all duration-300 hover:-translate-y-1 hover:border-blue-500/50">
+                <div
+                  className={`rounded-3xl border ${
+                    theme === "dark"
+                      ? "bg-[#0f172a] border-white/10"
+                      : "bg-white border-slate-200 shadow-sm"
+                  } p-6 cursor-pointer transition-all duration-300 hover:-translate-y-1 hover:border-blue-500/50`}
+                >
                   <div className="mb-6">
                     <h2 className="text-2xl font-bold">
                       Portfolio Distribution
@@ -133,7 +150,13 @@ const AnalyticsPage = () => {
                   <PortfolioDistributionChart pieChartData={pieChartData} />
                 </div>
               ) : (
-                <div className="flex min-h-[350px] items-center justify-center rounded-3xl border border-white/10 bg-[#0f172a] p-6 transition-all duration-300 hover:border-blue-500/50">
+                <div
+                  className={`flex min-h-[350px] items-center justify-center rounded-3xl border p-6 ${
+                    theme === "dark"
+                      ? "bg-[#0f172a] border-white/10"
+                      : "bg-white border-slate-200 shadow-sm"
+                  }`}
+                >
                   <div className="text-center">
                     <h2 className="text-2xl font-bold">No Portfolio Data</h2>
 
@@ -145,7 +168,13 @@ const AnalyticsPage = () => {
               )}
 
               {barChartData.length > 0 && (
-                <div className="rounded-3xl border border-white/10 bg-[#0f172a] p-6 cursor-pointer transition-all duration-300 hover:-translate-y-1 hover:border-blue-500/50">
+                <div
+                  className={`rounded-3xl border ${
+                    theme === "dark"
+                      ? "bg-[#0f172a] border-white/10"
+                      : "bg-white border-slate-200 shadow-sm"
+                  } p-6 cursor-pointer transition-all duration-300 hover:-translate-y-1 hover:border-blue-500/50`}
+                >
                   <div className="mb-6">
                     <h2 className="text-2xl font-bold">
                       Investment vs Current Value
@@ -162,13 +191,33 @@ const AnalyticsPage = () => {
               )}
 
               {profitLossChartData.length > 0 && (
-                <div className="rounded-3xl border border-white/10 bg-[#0f172a] p-6 cursor-pointer transition-all duration-300 hover:-translate-y-1 hover:border-blue-500/50">
+                <div
+                  className={`rounded-3xl border ${
+                    theme === "dark"
+                      ? "bg-[#0f172a] border-white/10"
+                      : "bg-white border-slate-200 shadow-sm"
+                  } p-6 cursor-pointer transition-all duration-300 hover:-translate-y-1 hover:border-blue-500/50`}
+                >
+                  <div className="mb-6">
+                    <h2 className="text-2xl font-bold">Profit & Loss</h2>
+
+                    <p className="mt-1 text-slate-400">
+                      Your portfolio performance over time
+                    </p>
+                  </div>
+
                   <ProfitLossChart profitLossChartData={profitLossChartData} />
                 </div>
               )}
 
               {topHoldingsChartData.length > 0 && (
-                <div className="rounded-3xl border border-white/10 bg-[#0f172a] p-6 cursor-pointer transition-all duration-300 hover:-translate-y-1 hover:border-blue-500/50">
+                <div
+                  className={`rounded-3xl border ${
+                    theme === "dark"
+                      ? "bg-[#0f172a] border-white/10"
+                      : "bg-white border-slate-200 shadow-sm"
+                  } p-6 cursor-pointer transition-all duration-300 hover:-translate-y-1 hover:border-blue-500/50`}
+                >
                   <div className="mb-6">
                     <h2 className="text-2xl font-bold">Top Holdings</h2>
 

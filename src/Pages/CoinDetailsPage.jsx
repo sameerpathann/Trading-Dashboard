@@ -16,6 +16,7 @@ const CoinDetailsPage = () => {
     quantity: "",
     buyPrice: "",
   });
+  const { theme } = useSelector((state) => state.theme);
 
   const { coinId } = useParams();
 
@@ -97,8 +98,20 @@ const CoinDetailsPage = () => {
   return (
     <AppLayout>
       {() => (
-        <div className="hideScrollbar h-[calc(100vh-80px)] overflow-y-auto bg-[#020617] p-6 text-white">
-          <div className="flex flex-col gap-4 rounded-3xl border border-white/10 bg-[#0f172a] p-6 md:flex-row md:items-center md:justify-between">
+        <div
+          className={`hideScrollbar h-[calc(100vh-80px)] overflow-y-auto p-6 transition-colors duration-300 ${
+            theme === "dark"
+              ? "bg-[#020617] text-white"
+              : "bg-slate-100 text-slate-900"
+          }`}
+        >
+          <div
+            className={`flex flex-col gap-4 rounded-3xl border ${
+              theme === "dark"
+                ? "border-white/10 bg-[#0f172a]"
+                : "border-slate-200 bg-white shadow-sm"
+            } p-6 md:flex-row md:items-center md:justify-between`}
+          >
             <div className="flex items-center gap-4">
               <img src={coin.image} alt={coin.name} className="h-16 w-16" />
 
@@ -111,7 +124,13 @@ const CoinDetailsPage = () => {
                   </span>
                 </div>
 
-                <p className="mt-1 text-slate-400 uppercase">{coin.symbol}</p>
+                <p
+                  className={`mt-1 uppercase ${
+                    theme === "dark" ? "text-slate-400" : "text-slate-500"
+                  }`}
+                >
+                  {coin.symbol}
+                </p>
               </div>
             </div>
 
@@ -124,7 +143,11 @@ const CoinDetailsPage = () => {
                     dispatch(addToWatchlist(coin));
                   }
                 }}
-                className="flex cursor-pointer items-center justify-center gap-2 rounded-2xl border border-white/10 bg-white/5 px-5 py-3 transition hover:bg-white/10"
+                className={`flex cursor-pointer items-center justify-center gap-2 rounded-2xl border px-5 py-3 transition-all duration-300 hover:scale-105 ${
+                  theme === "dark"
+                    ? "border-white/10 bg-white/5 hover:bg-white/10"
+                    : "border-slate-200 bg-slate-100 hover:bg-slate-200"
+                }`}
               >
                 <Star
                   size={18}
@@ -141,7 +164,11 @@ const CoinDetailsPage = () => {
               </button>
               <button
                 onClick={() => setIsPortfolioOpen(true)}
-                className="flex cursor-pointer items-center justify-center gap-2 rounded-2xl border border-white/10 bg-white/5 px-5 py-3 transition hover:bg-white/10"
+                className={`flex cursor-pointer items-center justify-center gap-2 rounded-2xl border px-5 py-3 transition-all duration-300 hover:scale-105 ${
+                  theme === "dark"
+                    ? "border-white/10 bg-white/5 hover:bg-white/10"
+                    : "border-slate-200 bg-slate-100 hover:bg-slate-200"
+                }`}
               >
                 Add to Portfolio
               </button>
@@ -158,12 +185,12 @@ const CoinDetailsPage = () => {
 
             <StatCard
               title="24h High"
-              value={`$${coin.high_24h.toLocaleString()}`}
+              value={`$${coin.high_24h?.toLocaleString()}`}
             />
 
             <StatCard
               title="24h Low"
-              value={`$${coin.low_24h.toLocaleString()}`}
+              value={`$${coin.low_24h?.toLocaleString()}`}
             />
 
             <StatCard title="ATH" value={`$${coin.ath.toLocaleString()}`} />
@@ -182,7 +209,7 @@ const CoinDetailsPage = () => {
 
             <StatCard
               title="24h Change"
-              value={`${coin.price_change_percentage_24h.toFixed(2)}%`}
+              value={`${coin.price_change_percentage_24h?.toFixed(2)}%`}
               className={
                 coin.price_change_percentage_24h >= 0
                   ? "text-green-400"
@@ -208,7 +235,13 @@ const CoinDetailsPage = () => {
             />
           </div>
 
-          <div className="mt-8 rounded-3xl border border-white/10 bg-[#0f172a] p-6">
+          <div
+            className={`mt-8 rounded-3xl border p-6 transition-all duration-300 ${
+              theme === "dark"
+                ? "border-white/10 bg-[#0f172a]"
+                : "border-slate-200 bg-white shadow-sm"
+            }`}
+          >
             <h2 className="mb-6 text-2xl font-bold">Historical Information</h2>
 
             <div className="grid gap-6 md:grid-cols-2">
@@ -254,7 +287,11 @@ const CoinDetailsPage = () => {
                       value={formData.quantity}
                       onChange={handleInputChange}
                       placeholder="Enter quantity"
-                      className="w-full rounded-2xl border border-white/10 bg-[#020617] px-4 py-3 outline-none transition focus:border-blue-500"
+                      className={`w-full rounded-2xl border px-4 py-3 outline-none transition-all duration-300 focus:border-blue-500 ${
+                        theme === "dark"
+                          ? "border-white/10 bg-[#020617] text-white"
+                          : "border-slate-200 bg-slate-50 text-slate-900"
+                      }`}
                     />
                   </div>
 
@@ -269,7 +306,11 @@ const CoinDetailsPage = () => {
                       value={formData.buyPrice}
                       onChange={handleInputChange}
                       placeholder="Enter buy price"
-                      className="w-full rounded-2xl border border-white/10 bg-[#020617] px-4 py-3 outline-none transition focus:border-blue-500"
+                      className={`w-full rounded-2xl border px-4 py-3 outline-none transition-all duration-300 focus:border-blue-500 ${
+                        theme === "dark"
+                          ? "border-white/10 bg-[#020617] text-white"
+                          : "border-slate-200 bg-slate-50 text-slate-900"
+                      }`}
                     />
                   </div>
 
@@ -280,7 +321,11 @@ const CoinDetailsPage = () => {
                         setFormData({ quantity: "", buyPrice: "" });
                         setIsPortfolioOpen(false);
                       }}
-                      className="flex-1 cursor-pointer rounded-2xl border border-white/10 bg-white/5 py-3 transition hover:bg-white/10"
+                      className={`flex-1 cursor-pointer rounded-2xl border py-3 transition-all duration-300 hover:scale-105 ${
+                        theme === "dark"
+                          ? "border-white/10 bg-white/5 hover:bg-white/10"
+                          : "border-slate-200 bg-slate-100 hover:bg-slate-200"
+                      }`}
                     >
                       Cancel
                     </button>
@@ -302,12 +347,34 @@ const CoinDetailsPage = () => {
   );
 };
 
-const StatCard = ({ title, value, className = "" }) => (
-  <div className="rounded-3xl border border-white/10 bg-[#0f172a] p-5">
-    <p className="text-sm text-slate-400">{title}</p>
+const StatCard = ({ title, value, className = "" }) => {
+  const { theme } = useSelector((state) => state.theme);
 
-    <h3 className={`mt-2 text-xl font-semibold ${className}`}>{value}</h3>
-  </div>
-);
+  return (
+    <div
+      className={`cursor-pointer rounded-3xl border p-5 transition-all duration-300 hover:-translate-y-1 hover:border-blue-500/50 ${
+        theme === "dark"
+          ? "border-white/10 bg-[#0f172a]"
+          : "border-slate-200 bg-white shadow-sm"
+      }`}
+    >
+      <p
+        className={`text-sm ${
+          theme === "dark" ? "text-slate-400" : "text-slate-500"
+        }`}
+      >
+        {title}
+      </p>
+
+      <h3
+        className={`mt-2 text-xl font-semibold ${
+          theme === "dark" ? "text-white" : "text-slate-900"
+        } ${className}`}
+      >
+        {value}
+      </h3>
+    </div>
+  );
+};
 
 export default CoinDetailsPage;
