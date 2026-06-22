@@ -1,5 +1,4 @@
 import React from "react";
-import MainLayout from "./Layout/mainLayout";
 import { Routes, Route } from "react-router-dom";
 import WatchlistPage from "./Pages/WatchlistPage";
 import DashboardPage from "./Pages/DashboardPage";
@@ -7,6 +6,7 @@ import AnalyticsPage from "./Pages/AnalyticsPage";
 import PortfolioPage from "./Pages/PortfolioPage";
 import SettingsPage from "./Pages/SettingsPage";
 import CoinDetailsPage from "./Pages/CoinDetailsPage";
+import MainLayout from "./Layout/MainLayout";
 
 const App = () => {
   return (
