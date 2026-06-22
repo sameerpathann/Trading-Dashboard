@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import PriceChart from "../Components/Common/PriceChart";
 import StatsCard from "../Components/Common/StatsCard";
+import { statsData } from "../Data/statsData";
 import SectionWrapper from "../Components/Common/SectionWrapper";
 import Button from "../Components/Common/Button";
 import MarketRow from "../Components/Common/MarketRow";
@@ -96,6 +97,7 @@ const MainContent = ({ query }) => {
   useEffect(() => {
     dispatch(getChartData(timeframeMap[activeTimeframe]));
   }, [activeTimeframe, dispatch]);
+
   return (
     <div
       className={`h-[calc(100vh-80px)] hideScrollbar overflow-y-auto p-6 transition-colors duration-300 ${
