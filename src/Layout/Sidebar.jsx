@@ -59,13 +59,13 @@ const Sidebar = ({ isSidebarOpen, setIsSidebarOpen }) => {
 
   return (
     <div
-      className={`fixed left-0 top-0 z-50 h-screen w-[240px] transform transition-transform duration-300 sm:static sm:translate-x-0 ${
+      className={`fixed left-0 top-0 z-50 h-dvh w-[240px] transform transition-transform duration-300 sm:static sm:translate-x-0 ${
         theme === "dark" ? "bg-[#071024]" : "bg-white border-r border-slate-200"
       } ${isSidebarOpen ? "translate-x-0" : "-translate-x-full"}`}
     >
       <button
         onClick={() => setIsSidebarOpen((prev) => !prev)}
-        className={`absolute right-4 top-4 rounded-xl border p-2 transition cursor-pointer hover:scale-105 lg:hidden ${
+        className={`absolute right-4 top-4 rounded-xl border p-2 transition cursor-pointer hover:scale-105 sm:hidden ${
           theme === "dark"
             ? "border-white/10 bg-white/5 text-slate-400 hover:bg-white/10"
             : "border-slate-200 bg-slate-100 text-slate-600 hover:bg-slate-200"
@@ -75,7 +75,7 @@ const Sidebar = ({ isSidebarOpen, setIsSidebarOpen }) => {
       </button>
 
       <div
-        className={`h-screen w-[240px] overflow-y-scroll hideScrollbar border-r p-4 ${
+        className={`h-full w-full  overflow-y-scroll hideScrollbar border-r p-4 ${
           theme === "dark"
             ? "border-white/10 bg-[#071024]"
             : "border-slate-200 bg-white"

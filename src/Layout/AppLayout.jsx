@@ -23,7 +23,7 @@ const AppLayout = ({ children }) => {
         setIsSidebarOpen={setIsSidebarOpen}
       />
 
-      <div className="lg:flex-1">
+      <div className="sm:flex-1">
         <Header
           query={query}
           setQuery={setQuery}
