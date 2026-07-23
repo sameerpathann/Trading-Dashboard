@@ -59,7 +59,7 @@ const Sidebar = ({ isSidebarOpen, setIsSidebarOpen }) => {
 
   return (
     <div
-      className={`fixed left-0 top-0 z-50 h-screen w-[240px] transform transition-transform duration-300 lg:static lg:translate-x-0 ${
+      className={`fixed left-0 top-0 z-50 h-screen w-[240px] transform transition-transform duration-300 sm:static sm:translate-x-0 ${
         theme === "dark" ? "bg-[#071024]" : "bg-white border-r border-slate-200"
       } ${isSidebarOpen ? "translate-x-0" : "-translate-x-full"}`}
     >
@@ -188,7 +188,7 @@ const Sidebar = ({ isSidebarOpen, setIsSidebarOpen }) => {
                 Sameer Pathan
               </h2>
 
-              <p className="text-sm text-green-500">Frontend Trader</p>
+              <p className="text-sm text-green-500">Trader</p>
             </div>
           </div>
         </div>

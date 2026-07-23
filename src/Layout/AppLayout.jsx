@@ -12,7 +12,7 @@ const AppLayout = ({ children }) => {
 
   return (
     <div
-      className={`flex min-h-screen transition-colors duration-300 ${
+      className={`flex  transition-colors duration-300 ${
         theme === "dark"
           ? "bg-[#020617] text-white"
           : "bg-slate-100 text-slate-900"
@@ -23,7 +23,7 @@ const AppLayout = ({ children }) => {
         setIsSidebarOpen={setIsSidebarOpen}
       />
 
-      <div className="flex-1">
+      <div className="lg:flex-1">
         <Header
           query={query}
           setQuery={setQuery}

@@ -14,7 +14,7 @@ const PriceChart = ({ activeTimeframe }) => {
   const { chartData } = useSelector((state) => state.chart);
 
   return (
-    <div className="h-[420px] min-w-0 w-full">
+    <div className="w-full h-full">
       <ResponsiveContainer width="100%" height="100%">
         <LineChart
           data={chartData}

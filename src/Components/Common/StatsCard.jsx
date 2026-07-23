@@ -5,7 +5,7 @@ const StatsCard = ({ title, value, change, changeColor }) => {
 
   return (
     <div
-      className={`cursor-pointer rounded-3xl border px-5 py-3 transition-all duration-300 hover:-translate-y-1 ${
+      className={`cursor-pointer rounded-3xl border px-5 py-3  transition-all duration-300 hover:-translate-y-1 ${
         theme === "dark"
           ? "border-white/10 bg-[#0f172a] hover:border-blue-500/50 hover:bg-[#172036]"
           : "border-slate-200 bg-white hover:border-blue-400 hover:bg-slate-50"

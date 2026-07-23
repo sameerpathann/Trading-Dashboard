@@ -100,7 +100,7 @@ const MainContent = ({ query }) => {
 
   return (
     <div
-      className={`h-[calc(100vh-80px)] hideScrollbar overflow-y-auto p-6 transition-colors duration-300 ${
+      className={`lg:h-[calc(100vh-80px)] hideScrollbar overflow-y-auto p-6 transition-colors duration-300 ${
         theme === "dark"
           ? "bg-[#020617] text-white"
           : "bg-slate-100 text-slate-900"
@@ -126,7 +126,7 @@ const MainContent = ({ query }) => {
           </div>
 
           {/* Chart Section */}
-          <SectionWrapper className="transition-all duration-300 hover:-translate-y-1 hover:border-blue-500/50">
+          <SectionWrapper className="transition-all lg:h-[550px] duration-300 hover:-translate-y-1 hover:border-blue-500/50">
             {" "}
             <div className="flex items-center justify-between">
               <div>
@@ -157,13 +157,17 @@ const MainContent = ({ query }) => {
               </div>
             </div>
             <div
-              className={`mt-6 rounded-3xl border border-dashed p-4 transition-all duration-300 hover:scale-[1.01] ${
+              className={`mt-6 rounded-3xl w-full h-[400px] border border-dashed p-4 transition-all duration-300 hover:scale-[1.01] ${
                 theme === "dark"
                   ? "border-white/10 bg-[#020617]"
                   : "border-slate-300 bg-slate-50"
               }`}
             >
-              <PriceChart activeTimeframe={activeTimeframe} />
+              {chartData.length > 0 ? (
+                <PriceChart activeTimeframe={activeTimeframe} />
+              ) : (
+                ""
+              )}
             </div>
           </SectionWrapper>
 
